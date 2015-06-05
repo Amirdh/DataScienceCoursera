@@ -1,0 +1,11 @@
+library(lattice)
+hpc<- read.table("household_power_consumption.txt", header = TRUE, sep = ";", dec = ".", na.strings = "?", colClasses = c(rep("character",2), rep("numeric",7)), stringsAsFactors = FALSE)
+hpcdate<-hpc[(hpc$Date=="1/2/2007" | hpc$Date=="2/2/2007" ),]
+hpcdate<- mutate(hpcdate, DateTime = paste(Date, Time))
+with(hpcdate, plot(dmy_hms(DateTime), Sub_metering_1, type = "n",xlab = " ", ylab="Energy Sub Metering"))
+with(hpcdate, lines(dmy_hms(DateTime), Sub_metering_1, col = "black"))
+with(hpcdate, lines(dmy_hms(DateTime), Sub_metering_2, col = "red"))
+with(hpcdate, lines(dmy_hms(DateTime), Sub_metering_3, col = "blue"))
+legend("topright", pch = "____", col = c("black", "red", "blue"), legend = c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"))
+dev.copy(png, file= "plot3.png")
+dev.off()
